@@ -14,40 +14,40 @@ class LandingScreen extends StatelessWidget {
       return MediaQuery.of(context).size.height * toDecimal;
     }
 
-    getWidth(percent) {
-      var toDecimal = percent / 100;
-      return MediaQuery.of(context).size.width * toDecimal;
-    }
+    // getWidth(percent) {
+    //   var toDecimal = percent / 100;
+    //   return MediaQuery.of(context).size.width * toDecimal;
+    // }
 
-    showDialogforTrackingReport() async {
-      TextEditingController code = TextEditingController();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Enter Tracking Code'),
-            content: SizedBox(
-                height: getHeight(11),
-                width: getWidth(100),
-                child:
-                    TextFieldWidget(label: 'Tracking Code', controller: code)),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  if (code.text.isNotEmpty) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TrackReportView(
-                              documentID: code.text,
-                            )));
-                  }
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    // showDialogforTrackingReport() async {
+    //   TextEditingController code = TextEditingController();
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text('Enter Tracking Code'),
+    //         content: SizedBox(
+    //             height: getHeight(11),
+    //             width: getWidth(100),
+    //             child:
+    //                 TextFieldWidget(label: 'Tracking Code', controller: code)),
+    //         actions: [
+    //           TextButton(
+    //             onPressed: () async {
+    //               if (code.text.isNotEmpty) {
+    //                 Navigator.of(context).push(MaterialPageRoute(
+    //                     builder: (context) => TrackReportView(
+    //                           documentID: code.text,
+    //                         )));
+    //               }
+    //             },
+    //             child: Text('OK'),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -57,7 +57,7 @@ class LandingScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: getHeight(10),
+                height: getHeight(25),
               ),
               Image.asset(
                 'assets/images/carnab.png',
@@ -149,33 +149,33 @@ class LandingScreen extends StatelessWidget {
                   // SizedBox(
                   //   height: getHeight(2),
                   // ),
-                  TextRegular(
-                    text: 'or',
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialogforTrackingReport();
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/tracking.jpg',
-                          height: 100,
-                        ),
-                        SizedBox(
-                          height: getHeight(1),
-                        ),
-                        TextBold(
-                          text: 'Track Report',
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // TextRegular(
+                  //   text: 'or',
+                  //   fontSize: 14,
+                  //   color: Colors.black,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showDialogforTrackingReport();
+                  //   },
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       Image.asset(
+                  //         'assets/images/tracking.jpg',
+                  //         height: 100,
+                  //       ),
+                  //       SizedBox(
+                  //         height: getHeight(1),
+                  //       ),
+                  //       TextBold(
+                  //         text: 'Track Report',
+                  //         fontSize: 18,
+                  //         color: Colors.black,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ],

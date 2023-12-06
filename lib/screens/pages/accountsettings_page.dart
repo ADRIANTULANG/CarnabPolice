@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sunspark/screens/auth/landing_screen.dart';
@@ -33,6 +34,19 @@ class _AccountSettingsState extends State<AccountSettings> {
         password: oldPassword,
       );
       await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+      var res = await FirebaseFirestore.instance
+          .collection('Officers')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (res.exists) {
+        var details = res.data();
+        if (details != null) {
+          createLogs(
+              username: details['name'],
+              userid: FirebaseAuth.instance.currentUser!.uid,
+              log: "${details['name']} changed his/her password");
+        }
+      }
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (BuildContext context) => LandingScreen()),
@@ -48,6 +62,20 @@ class _AccountSettingsState extends State<AccountSettings> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
           email: FirebaseAuth.instance.currentUser!.email!);
+      var res = await FirebaseFirestore.instance
+          .collection('Officers')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      if (res.exists) {
+        var details = res.data();
+        if (details != null) {
+          createLogs(
+              username: details['name'],
+              userid: FirebaseAuth.instance.currentUser!.uid,
+              log: "${details['name']} reset his/her password");
+        }
+      }
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (BuildContext context) => LandingScreen()),
@@ -78,6 +106,20 @@ class _AccountSettingsState extends State<AccountSettings> {
     } on Exception catch (_) {
       showToast("Something went wrong $_");
     }
+  }
+
+  createLogs(
+      {required String username,
+      required String userid,
+      required String log}) async {
+    await FirebaseFirestore.instance.collection('logs').add({
+      "dateTime": Timestamp.now(),
+      "username": username,
+      "userid": userid,
+      "userDocReference":
+          FirebaseFirestore.instance.collection('Officers').doc(userid),
+      "logMessage": log
+    });
   }
 
   TextEditingController oldPassword = TextEditingController();

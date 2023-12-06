@@ -127,12 +127,31 @@ class _DetailsPageState extends State<DetailsPage> {
             "police_name": officerName,
             "date_taken": Timestamp.now()
           });
+          createLogs(
+              username: officerName,
+              userid: userid,
+              log:
+                  "$officerName taked action with the report id ${widget.reportId}");
         }
       }
       checkifReportTaken();
     } catch (e) {
       print(e);
     }
+  }
+
+  createLogs(
+      {required String username,
+      required String userid,
+      required String log}) async {
+    await FirebaseFirestore.instance.collection('logs').add({
+      "dateTime": Timestamp.now(),
+      "username": username,
+      "userid": userid,
+      "userDocReference":
+          FirebaseFirestore.instance.collection('Officers').doc(userid),
+      "logMessage": log
+    });
   }
 
   // populateValidID() async {
@@ -430,6 +449,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                 .collection('Reports')
                                 .doc(data.id)
                                 .update({'status': 'Processing'});
+                            createLogs(
+                                username: officerName,
+                                userid: FirebaseAuth.instance.currentUser!.uid,
+                                log:
+                                    "$officerName updated the status to Processing with the report id ${widget.reportId}");
                           }
                         },
                         child: Row(
@@ -451,6 +475,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                 .collection('Reports')
                                 .doc(data.id)
                                 .update({'status': 'Resolved'});
+                            createLogs(
+                                username: officerName,
+                                userid: FirebaseAuth.instance.currentUser!.uid,
+                                log:
+                                    "$officerName updated the status to Resolved with the report id ${widget.reportId}");
                           }
                         },
                         child: Row(
@@ -472,6 +501,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                 .collection('Reports')
                                 .doc(data.id)
                                 .update({'status': 'Unresolved'});
+                            createLogs(
+                                username: officerName,
+                                userid: FirebaseAuth.instance.currentUser!.uid,
+                                log:
+                                    "$officerName updated the status to Unresolved with the report id ${widget.reportId}");
                           }
                         },
                         child: Row(
